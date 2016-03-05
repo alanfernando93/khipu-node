@@ -1,0 +1,14 @@
+{
+  "name": "khipu",
+  "version": "0.0.0",
+  "description": "A nodejs library for Khipu",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "khipu"
+  ],
+  "author": "Alfredo Cádiz <alfredo@badger.cl> (https://badger.cl)",
+  "license": "MIT"
+}
