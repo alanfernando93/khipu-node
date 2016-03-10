@@ -14,11 +14,14 @@ var secret = ''; //Complete with your secret
 
 var khipuclient = new Khipu({secret:secret, receiverId:receiverId });
 khipuclient.banksGet(function(res){
-        console.log(res);
-			},
-			function(error){
-        console.log(error);
-			});
+  var banks = res.data.banks;
+  for(var i=0; i<banks.length; i++){
+    console.log(banks[i]);
+  }
+},
+function(error){
+  console.log(error);
+});
 ```
 
 =Methods available
