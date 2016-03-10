@@ -2,6 +2,10 @@
 
 NodeJS of Khipu's API. Detailed description of each endpoint can be found at https://khipu.com/page/api
 
+_IMPORTANT: This library has not been fully tested yet._
+
+
+
 Usage example:
 ```
 var Khipu = require('khipu');
