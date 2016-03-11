@@ -1,6 +1,6 @@
 # Khipu for nodejs
 
-NodeJS of Khipu's API. Detailed description of each endpoint can be found at https://khipu.com/page/api
+NodeJS library for Khipu's API. Detailed description of each endpoint can be found at https://khipu.com/page/api
 
 __IMPORTANT: This library has not been fully tested yet.__
 
