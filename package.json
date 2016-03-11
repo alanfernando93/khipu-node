@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "description": "A nodejs library for Khipu",
   "main": "khipu.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/badgercl/khipu-node.git"
+  },
   "scripts": {
     "test": "mocha"
   },
