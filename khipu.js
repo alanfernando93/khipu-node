@@ -103,11 +103,15 @@ Khipu.prototype.receiversPost = function(params, successCB, errorCB){
 
 function makeCall(service_name, method, params, receiverId, secret, successCB, errorCB){
 	hash = makeAuthorization(method, makeURL(service_name), params, secret);
+	query = '';
+	if(params && typeof params === 'object' && method === 'GET'){
+		query = '?' + httpQuery(params);
+	}
 	req = https.request(
 		{
 			hostname: KHIPU_API_HOST,
 			port: 443,
-			path: KHIPU_API_PREFIX + service_name,
+			path: KHIPU_API_PREFIX + service_name + query,
 			method: method,
 			headers: {Authorization: receiverId +':'+ hash, 'Content-type':'application/x-www-form-urlencoded'}
 		},
@@ -153,14 +157,8 @@ function makeAuthorization(method, url, params, secret){
 	toSign +=  query;
 
 	var hmac = crypto.createHmac('sha256', secret);
-
-
-console.log(toSign);
-
 	hmac.update(toSign);
 	res = hmac.digest('hex');
-	console.log('\n');
-	console.log(res);
 	return res;
 }
 
