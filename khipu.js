@@ -102,14 +102,14 @@ Khipu.prototype.receiversPost = function(params, successCB, errorCB){
 }
 
 function makeCall(service_name, method, params, receiverId, secret, successCB, errorCB){
-	hash = makeAuthorization(method, makeURL(service_name), {}, secret);
+	hash = makeAuthorization(method, makeURL(service_name), params, secret);
 	req = https.request(
 		{
 			hostname: KHIPU_API_HOST,
 			port: 443,
 			path: KHIPU_API_PREFIX + service_name,
 			method: method,
-			headers: {Authorization: receiverId +':'+ hash}
+			headers: {Authorization: receiverId +':'+ hash, 'Content-type':'application/x-www-form-urlencoded'}
 		},
 			function(res){
 				res.on('error', function(e){
@@ -128,13 +128,14 @@ function makeCall(service_name, method, params, receiverId, secret, successCB, e
 				});
 			}
 	);
-	if (params && typeof params === 'object '&& method !== 'GET') {
-    req.write(JSON.stringify(params));
+	if (params && typeof params === 'object' && method !== 'GET') {
+    req.write(httpQuery(params));
   }
 	req.on('error', function(e) {
 		handleError(e, cb, logger);
 	});
 	req.end();
+	console.log(httpQuery(params));
 }
 
 function handleError(err, cb, logger) {
@@ -147,16 +148,26 @@ function handleError(err, cb, logger) {
 }
 
 function makeAuthorization(method, url, params, secret){
+	if(params===null) params = {};
 	var toSign = encodeURIComponent(method);
 	toSign += '&'+encodeURIComponent(url);
 	sortedParamKeys = Object.keys(params).sort();
-	for(var i=0;i<sortedParamKeys.length;i++){
-		toSign += '&' +  encodeURIComponent(sortedParamKeys[i]) + '=' + encodeURIComponent(params[sortedParamKeys[i]]);
-	}
+	toSign += '&' + httpQuery(params);
 	var hmac = crypto.createHmac('sha256', secret);
+	console.log('toSign: '+toSign);
 	hmac.update(toSign);
 	res = hmac.digest('hex');
+	console.log('hash: '+res);
 	return res;
+}
+
+function httpQuery(params){
+	query = '';
+	sortedParamKeys = Object.keys(params).sort();
+	for(var i=0;i<sortedParamKeys.length;i++){
+		query += '&' +  encodeURIComponent(sortedParamKeys[i]) + '=' + encodeURIComponent(params[sortedParamKeys[i]]);
+	}
+	return query.substring(1);
 }
 
 function makeURL(path){
