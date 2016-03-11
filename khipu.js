@@ -147,14 +147,20 @@ function handleError(err, cb, logger) {
 }
 
 function makeAuthorization(method, url, params, secret){
-	var toSign = encodeURIComponent(method);
-	toSign += '&'+encodeURIComponent(url);
+	var toSign = customEncodeURIComponent(method);
+	toSign += '&'+customEncodeURIComponent(url);
 	var query = params===null?'':('&'+httpQuery(params));
 	toSign +=  query;
 
 	var hmac = crypto.createHmac('sha256', secret);
+
+
+console.log(toSign);
+
 	hmac.update(toSign);
 	res = hmac.digest('hex');
+	console.log('\n');
+	console.log(res);
 	return res;
 }
 
@@ -163,9 +169,13 @@ function httpQuery(params){
 	if(params===null) return null;
 	sortedParamKeys = Object.keys(params).sort();
 	for(var i=0;i<sortedParamKeys.length;i++){
-		query += '&' +  encodeURIComponent(sortedParamKeys[i]) + '=' + encodeURIComponent(params[sortedParamKeys[i]]);
+		query += '&' +  customEncodeURIComponent(sortedParamKeys[i]) + '=' + customEncodeURIComponent(params[sortedParamKeys[i]]);
 	}
 	return query.substring(1);
+}
+
+function customEncodeURIComponent(text){
+	return encodeURIComponent(text).replace(/\(/g, "%28").replace(/\)/g, "%29");
 }
 
 function makeURL(path){
