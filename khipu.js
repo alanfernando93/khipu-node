@@ -135,7 +135,6 @@ function makeCall(service_name, method, params, receiverId, secret, successCB, e
 		handleError(e, cb, logger);
 	});
 	req.end();
-	console.log(httpQuery(params));
 }
 
 function handleError(err, cb, logger) {
@@ -148,21 +147,20 @@ function handleError(err, cb, logger) {
 }
 
 function makeAuthorization(method, url, params, secret){
-	if(params===null) params = {};
 	var toSign = encodeURIComponent(method);
 	toSign += '&'+encodeURIComponent(url);
-	sortedParamKeys = Object.keys(params).sort();
-	toSign += '&' + httpQuery(params);
+	var query = params===null?'':('&'+httpQuery(params));
+	toSign +=  query;
+
 	var hmac = crypto.createHmac('sha256', secret);
-	console.log('toSign: '+toSign);
 	hmac.update(toSign);
 	res = hmac.digest('hex');
-	console.log('hash: '+res);
 	return res;
 }
 
 function httpQuery(params){
 	query = '';
+	if(params===null) return null;
 	sortedParamKeys = Object.keys(params).sort();
 	for(var i=0;i<sortedParamKeys.length;i++){
 		query += '&' +  encodeURIComponent(sortedParamKeys[i]) + '=' + encodeURIComponent(params[sortedParamKeys[i]]);
