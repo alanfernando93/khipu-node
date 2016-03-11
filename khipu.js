@@ -82,7 +82,7 @@ Khipu.prototype.paymentsIdDelete = function(paymentId, successCB, errorCB){
 }
 
 Khipu.prototype.paymentsIdRefundsPost = function(paymentId, successCB, errorCB){
-	makeCall(KHIPU_API_PAYMENTS+'/'+paymentId,
+	makeCall(KHIPU_API_PAYMENTS+'/'+paymentId+'/refunds',
 		'POST',
 		null,
 		this.receiverId,
