@@ -175,7 +175,13 @@ function httpQuery(params){
 }
 
 function customEncodeURIComponent(text){
-	return encodeURIComponent(text).replace(/\(/g, "%28").replace(/\)/g, "%29");
+	return encodeURIComponent(text)
+	.replace(/\(/g, "%28")
+	.replace(/\)/g, "%29")
+	.replace(/\'/g, "%27")
+	.replace(/\!/g, "%21")
+	.replace(/\*/g, "%2A")
+	;
 }
 
 function makeURL(path){
